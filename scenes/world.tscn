@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dodlwa5xcnklm"]
+
+[ext_resource type="PackedScene" uid="uid://baqn1q7i1prwq" path="res://scenes/boss/scenes/golem.tscn" id="2_xh5ea"]
+[ext_resource type="PackedScene" uid="uid://crdi7qsvepshc" path="res://scenes/player/scenes/player.tscn" id="3_qm8dw"]
+
+[node name="World" type="Node2D"]
+
+[node name="player" parent="." instance=ExtResource("3_qm8dw")]
+position = Vector2(115, 100)
+
+[node name="Golem" parent="." node_paths=PackedStringArray("progress_bar") instance=ExtResource("2_xh5ea")]
+position = Vector2(321, 147)
+progress_bar = NodePath("../ProgressBar")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = 214.0
+offset_top = -7.0
+offset_right = 499.0
+offset_bottom = 20.0
+value = 100.0

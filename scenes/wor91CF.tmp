@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dodlwa5xcnklm"]
+
+[ext_resource type="Script" path="res://scenes/player.gd" id="1_ps3db"]
+[ext_resource type="PackedScene" uid="uid://baqn1q7i1prwq" path="res://scenes/golem.tscn" id="2_xh5ea"]
+[ext_resource type="PackedScene" uid="uid://crdi7qsvepshc" path="res://scenes/player.tscn" id="3_qm8dw"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_ps3db")
+
+[node name="Golem" parent="." instance=ExtResource("2_xh5ea")]
+position = Vector2(235, 75)
+
+[node name="player" parent="." instance=ExtResource("3_qm8dw")]
+position = Vector2(115, 100)
