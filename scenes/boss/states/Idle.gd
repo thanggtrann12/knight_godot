@@ -1,6 +1,6 @@
 extends State
  
-@onready var collision = $"../../PlayerDetection/CollisionShape2D"
+@onready var collision = $"../../GolemPlayerDetection/CollisionShape2D"
 @onready var progress_bar = owner.find_child("ProgressBar")
  
 var player_entered: bool = false:
@@ -13,6 +13,5 @@ func transition():
 	if player_entered:
 		get_parent().change_state("Follow")
  
-func _on_player_detection_body_entered(_body):
+func _on_golem_player_detection_body_exited(_body):
 	player_entered = true
- 

@@ -4,7 +4,7 @@ extends CharacterBody2D
 @onready var sprite = $Sprite2D
 #@onready var progress_bar = $UI/ProgressBar
 @onready var damage: int = 10
-
+@export var speed: int = 50
 @export var progress_bar: ProgressBar
 
 var direction : Vector2
@@ -33,7 +33,7 @@ func _process(_delta):
 		sprite.flip_h = false
  
 func _physics_process(delta):
-	velocity = direction.normalized() * 40
+	velocity = direction.normalized() * speed
 	move_and_collide(velocity * delta)
  
 func take_damage(amount: int):

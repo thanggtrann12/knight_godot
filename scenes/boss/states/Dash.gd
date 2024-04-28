@@ -14,7 +14,7 @@ func enter():
 func dash():
 	var tween = create_tween()
 	dash_hit_box.get_child(0).set_disabled(false)
-	tween.tween_property(owner, "position", player.position, 1)
+	tween.tween_property(owner, "position", player.position, 0.6)
 	await tween.finished
 	dash_hit_box.get_child(0).set_disabled(true)
 

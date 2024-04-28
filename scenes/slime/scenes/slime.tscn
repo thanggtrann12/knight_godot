@@ -1,0 +1,733 @@
+[gd_scene load_steps=44 format=3 uid="uid://cudqs2lc6vhdx"]
+
+[ext_resource type="Texture2D" uid="uid://gc6ql4sxpjyx" path="res://arts/slime/SpriteSheet.png" id="2_2u3um"]
+[ext_resource type="Texture2D" uid="uid://clfdqohel1upr" path="res://arts/slime/GreenSlime.png" id="2_8regw"]
+[ext_resource type="Script" path="res://base_state/FiniteStateMachine.gd" id="4_qhjuh"]
+
+[sub_resource type="GDScript" id="GDScript_vb6q3"]
+script/source = "extends CharacterBody2D
+ 
+@onready var player = get_parent().find_child(\"player\")
+@onready var sprite = $Sprite2D
+@onready var damage: int = 10
+@export var speed: int = 50
+@export var progress_bar: ProgressBar
+
+
+var direction : Vector2
+var DEF = 0
+ 
+var health = 100:
+	set(value):
+		health = value
+		if value <= 0:
+			find_child(\"FiniteStateMachine\").change_state(\"Death\")
+ 
+func _ready():
+	set_physics_process(false)
+ 
+func _process(_delta):
+	direction = player.position - position
+ 
+	if direction.x < 0:
+		sprite.flip_h = true
+	else:
+		sprite.flip_h = false
+ 
+func _physics_process(delta):
+	velocity = direction.normalized() * speed
+	move_and_collide(velocity * delta)
+ 
+func take_damage(amount: int):
+	health -= amount - DEF
+
+func get_damage():
+	return damage
+
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkgxc"]
+atlas = ExtResource("2_8regw")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5jkvn"]
+atlas = ExtResource("2_8regw")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g77jr"]
+atlas = ExtResource("2_8regw")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7ij4"]
+atlas = ExtResource("2_8regw")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3274"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0bfs2"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nu885"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qf7ek"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khjyx"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3av1"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hs11"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8cg6c"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i42s1"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_emwbp"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hi6k6"]
+atlas = ExtResource("2_8regw")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8uwpt"]
+atlas = ExtResource("2_8regw")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8pchb"]
+atlas = ExtResource("2_8regw")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7m5a4"]
+atlas = ExtResource("2_8regw")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0i7s"]
+atlas = ExtResource("2_8regw")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmqbg"]
+atlas = ExtResource("2_8regw")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oe4aw"]
+atlas = ExtResource("2_8regw")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5obnt"]
+atlas = ExtResource("2_8regw")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7o0d"]
+atlas = ExtResource("2_8regw")
+region = Rect2(48, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qo22n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkgxc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5jkvn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g77jr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x7ij4")
+}],
+"loop": false,
+"name": &"back_follow",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3274")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0bfs2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nu885")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qf7ek")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khjyx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q3av1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0hs11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8cg6c")
+}],
+"loop": true,
+"name": &"front_follow",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i42s1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_emwbp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hi6k6")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8uwpt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8pchb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7m5a4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0i7s")
+}],
+"loop": false,
+"name": &"left_follow",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmqbg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oe4aw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5obnt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7o0d")
+}],
+"loop": false,
+"name": &"right_follow",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_qo3eu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Smoke:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_gdips"]
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["back_follow"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FiniteStateMachine/JumpAttack")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"attacking"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_561sb"]
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["death"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Smoke:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedSprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_ejioq"]
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["front_follow"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FiniteStateMachine/JumpAttack")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"attacking"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_klodt"]
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["idle"]
+}
+
+[sub_resource type="Animation" id="Animation_8kx1m"]
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["left_follow"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FiniteStateMachine/JumpAttack")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"attacking"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_tw2tu"]
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["right_follow"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FiniteStateMachine/JumpAttack")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"attacking"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q4dqr"]
+_data = {
+"RESET": SubResource("Animation_qo3eu"),
+"back_follow": SubResource("Animation_gdips"),
+"death": SubResource("Animation_561sb"),
+"front_follow": SubResource("Animation_ejioq"),
+"idle": SubResource("Animation_klodt"),
+"left_follow": SubResource("Animation_8kx1m"),
+"right_follow": SubResource("Animation_tw2tu")
+}
+
+[sub_resource type="GDScript" id="GDScript_gte8f"]
+script/source = "extends State
+ 
+@onready var collision = $\"../../SlimePlayerDetection/CollisionShape2D\"
+#@onready var progress_bar = owner.find_child(\"ProgressBar\")
+
+
+var player_entered: bool = false:
+	set(value):
+		player_entered = value
+		collision.set_deferred(\"disabled\", value)
+		#progress_bar.set_deferred(\"visible\",value)
+ 
+func transition():
+	if player_entered:
+		get_parent().change_state(\"Follow\")
+ 
+func _on_slime_player_detection_body_entered(body):
+	if body.is_in_group(\"player\"):
+		player_entered = true
+
+
+func _on_slime_player_detection_body_exited(body):
+	if body.is_in_group(\"player\"):
+		player_entered = false
+"
+
+[sub_resource type="GDScript" id="GDScript_4hnm0"]
+script/source = "extends State
+ 
+func enter():
+	super.enter()
+	var current_dir = get_direction()
+	if !current_dir == \" \":
+		owner.set_physics_process(true)
+		animation_player.play(current_dir+\"_follow\")
+ 
+func exit():
+	super.exit()
+	owner.set_physics_process(false)
+ 
+func transition():
+	var distance = owner.direction.length()
+ 
+	if distance <= 10:
+		get_parent().change_state(\"JumpAttack\")
+	if distance > 40:
+		get_parent().change_state(\"Idle\")
+		
+func get_direction():
+	if owner.direction.x == 1 and owner.direction.y == 0:
+		return \"right\"
+	elif owner.direction.x == -1 and owner.direction.y == 0:
+		return \"left\"
+	elif owner.direction.x == 0 and owner.direction.y == 1:
+		return \"front\"
+	elif owner.direction.x == 0 and owner.direction.y == -1:
+		return \"back\"
+	else: return \"front\"
+"
+
+[sub_resource type="GDScript" id="GDScript_7lmyu"]
+script/source = "extends State
+@onready var jump_hit_box = $JumpHitBox
+
+@onready var is_cool_down: bool = false
+@onready var attack_cool_down = $\"../../AttackCoolDown\"
+
+const MELEE_DAMAGE: int = 10
+
+func enter():
+	super.enter()
+	jump_hit_box.visible = true
+	var current_dir = get_direction()
+	if current_dir.length() > 0:
+		animation_player.play(current_dir+\"_follow\")
+		await animation_player.animation_finished
+ 
+func transition():
+	if owner.direction.length() > 40:
+		get_parent().change_state(\"Idle\")
+ 
+func attacking():
+	if is_cool_down == true: return
+	var tween = create_tween()
+	tween.tween_property(owner, \"position\", player.position, 0.6)
+	await tween.finished
+	var overlappingAreas = jump_hit_box.get_overlapping_areas()
+	for overlappingArea in overlappingAreas:
+		var player_node = overlappingArea.get_owner()
+		if player_node:
+			player_node.take_damage(MELEE_DAMAGE)
+			attack_cool_down.start()
+
+func get_direction():
+	if owner.direction.x == 1 and owner.direction.y == 0:
+		return \"right\"
+	elif owner.direction.x == -1 and owner.direction.y == 0:
+		return \"left\"
+	elif owner.direction.x == 0 and owner.direction.y == 1:
+		return \"front\"
+	elif owner.direction.x == 0 and owner.direction.y == -1:
+		return \"back\"
+	return \"\"
+
+
+func _on_attack_cool_down_timeout():
+	is_cool_down = false
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w5144"]
+
+[sub_resource type="GDScript" id="GDScript_p5wtx"]
+script/source = "extends State
+ 
+func enter():
+	super.enter()
+	animation_player.play(\"death\")
+	await animation_player.animation_finished
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f7tak"]
+radius = 30.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sqylv"]
+radius = 5.0
+
+[node name="Slime" type="CharacterBody2D"]
+script = SubResource("GDScript_vb6q3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+texture = ExtResource("2_8regw")
+hframes = 4
+vframes = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qo22n")
+animation = &"right_follow"
+autoplay = "idle"
+frame = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q4dqr")
+}
+
+[node name="Smoke" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_2u3um")
+hframes = 6
+frame = 5
+
+[node name="FiniteStateMachine" type="Node2D" parent="."]
+script = ExtResource("4_qhjuh")
+
+[node name="Idle" type="Node2D" parent="FiniteStateMachine"]
+script = SubResource("GDScript_gte8f")
+
+[node name="Follow" type="Node2D" parent="FiniteStateMachine"]
+script = SubResource("GDScript_4hnm0")
+
+[node name="JumpAttack" type="Node2D" parent="FiniteStateMachine"]
+script = SubResource("GDScript_7lmyu")
+
+[node name="JumpHitBox" type="Area2D" parent="FiniteStateMachine/JumpAttack"]
+position = Vector2(0, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FiniteStateMachine/JumpAttack/JumpHitBox"]
+shape = SubResource("CircleShape2D_w5144")
+
+[node name="Death" type="Node2D" parent="FiniteStateMachine"]
+script = SubResource("GDScript_p5wtx")
+
+[node name="SlimePlayerDetection" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlimePlayerDetection"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_f7tak")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_sqylv")
+
+[node name="debug" type="Label" parent="."]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="AttackCoolDown" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="body_entered" from="FiniteStateMachine/JumpAttack/JumpHitBox" to="FiniteStateMachine/JumpAttack" method="_on_dash_hit_box_body_entered"]
+[connection signal="body_entered" from="SlimePlayerDetection" to="FiniteStateMachine/Idle" method="_on_slime_player_detection_body_entered"]
+[connection signal="body_exited" from="SlimePlayerDetection" to="FiniteStateMachine/Idle" method="_on_slime_player_detection_body_exited"]
+[connection signal="timeout" from="AttackCoolDown" to="FiniteStateMachine/JumpAttack" method="_on_attack_cool_down_timeout"]

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://154vouve5jcs"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_doxad"]
+
+[sub_resource type="GDScript" id="GDScript_qfbti"]
+script/source = "extends Sprite2D
+
+func set_property(tx_pos, tx_scale):
+	position = tx_pos
+	scale = tx_scale
+
+func ghosting():
+	var tween_fade = get_tree().create_tween()
+	
+	tween_fade.tween_property(self, \"self_modulate\", Color(1, 1 ,1 ,0), 0.75)
+	await tween_fade.finished
+	queue_free()
+"
+
+[node name="Ghost" type="AnimatedSprite2D"]
+position = Vector2(225, 102)
+sprite_frames = SubResource("SpriteFrames_doxad")
+script = SubResource("GDScript_qfbti")

@@ -505,6 +505,7 @@ text = "Boss Slained
 "
 
 [node name="debug" type="Label" parent="."]
+unique_name_in_owner = true
 offset_left = -23.0
 offset_top = -44.0
 offset_right = 26.0
@@ -528,10 +529,10 @@ shape = SubResource("CapsuleShape2D_xc3tt")
 position = Vector2(-22, 8)
 shape = SubResource("CapsuleShape2D_18303")
 
-[node name="PlayerDetection" type="Area2D" parent="."]
+[node name="GolemPlayerDetection" type="Area2D" parent="."]
 collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GolemPlayerDetection"]
 shape = SubResource("CircleShape2D_648jj")
 
 [node name="FiniteStateMachine" type="Node2D" parent="."]
@@ -577,6 +578,6 @@ disabled = true
 [node name="Death" type="Node2D" parent="FiniteStateMachine"]
 script = ExtResource("12_hylvd")
 
-[connection signal="body_entered" from="PlayerDetection" to="FiniteStateMachine/Idle" method="_on_player_detection_body_entered"]
+[connection signal="body_exited" from="GolemPlayerDetection" to="FiniteStateMachine/Idle" method="_on_golem_player_detection_body_exited"]
 [connection signal="body_entered" from="FiniteStateMachine/LaserBeam/LaserHitBox" to="FiniteStateMachine/LaserBeam" method="_on_laser_hit_box_body_entered"]
 [connection signal="body_entered" from="FiniteStateMachine/Dash/DashHitBox" to="FiniteStateMachine/Dash" method="_on_dash_hit_box_body_entered"]

@@ -1,68 +1,76 @@
 extends CharacterBody2D
 
-# Variables
-var direction: Vector2 = Vector2.ZERO
-var swing: bool = false
-var speed: int = 200
-var health: int = 100
+var direction : Vector2 = Vector2.ZERO
+var swing : bool = false
 
-# References
 @onready var animation_tree = $AnimationTree
 @onready var health_bar = $HealthBar
-@onready var hit_box = $Hand/HitBox
+@onready var satama_bar = $SatamaBar
+
+@export var health: int = 100
+@export var satama: int = 100
+@export var tilemap: TileMap
+@onready var is_dash: bool = false
+@onready var speed: int = 100
 
 func _ready():
-	# Initialize health bar
 	health_bar.max_value = health
 	health_bar.value = health
+	satama_bar.max_value = satama
+	satama_bar.value = satama
 
 func _physics_process(_delta):
-	# Movement logic
 	if not swing:
 		velocity = direction * speed
 	else:
 		velocity = Vector2.ZERO
 	move_and_slide()
-
+	
 func _process(_delta):
-	# Input handling
-	direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-
+	satama += 1
+	satama_bar.value = satama
+	direction = Input.get_vector("ui_left","ui_right","ui_up","ui_down")
+	
 	if direction != Vector2.ZERO and not swing:
-		set_movement_animation(true)
+		set_walking(true)
+		update_blend_position()
 	else:
-		set_movement_animation(false)
-
+		set_walking(false)
+	
 	if Input.is_action_just_pressed("swing"):
 		set_swing(true)
 
-func set_swing(value=false):
-	# Set swing animation
+func set_swing(value = false):
 	swing = value
 	animation_tree["parameters/conditions/swing"] = value
-	hit_box.get_child(0).set_disabled(value)
 
-func set_movement_animation(is_walking):
-	# Set movement animation
-	animation_tree["parameters/conditions/is_walking"] = is_walking
-	animation_tree["parameters/conditions/idle"] = not is_walking
+func set_walking(value):
+	animation_tree["parameters/conditions/is_walking"] = value
+	animation_tree["parameters/conditions/idle"] = not value
+
+func update_blend_position():
 	animation_tree["parameters/attack/blend_position"] = direction
 	animation_tree["parameters/idle/blend_position"] = direction
 	animation_tree["parameters/walk/blend_position"] = direction
 
-func attacking():
-	pass  # Unused function
-
-func take_damage(damage: int):
-	# Damage handling
-	health -= damage
+func take_damage(amount: int):
+	health -= amount
 	health_bar.value = health
+	
 	if health <= 0:
-		owner.get_tree().reload_current_scene()
-	else:
-		call_deferred("_process", get_physics_process_delta_time())
+		get_tree().reload_current_scene()
 
-func _on_hit_box_body_entered(body):
-	# Handle collision with other bodies
-	if swing and body.is_in_group("enemy"):
-		body.take_damage(10)
+func dash():
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "position", position + velocity * 0.8, 0.45)
+	await tween.finished
+	
+func _input(event):
+	if event.is_action_pressed("dash"):
+		if satama > 0:
+			satama -= 20  # Reduce stamina by 10 when dashing
+			satama_bar.value = satama
+			dash()
+	elif event.is_action_released("dash"):
+		satama += 10  # Increase stamina by 10 when dash is released
+		satama_bar.value = satama
